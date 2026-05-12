@@ -633,6 +633,22 @@
 }
     </style>
     <audio id="notificationSound" src="https://assets.mixkit.co/sfx/preview/mixkit-positive-notification-951.mp3" preload="auto"></audio>
+    <!-- ===== COPIE-COLLE CE BLOC JUSTE AVANT </head> ===== -->
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+<!-- ===== COPIE-COLLE CE BLOC JUSTE APRES LES SCRIPTS FIREBASE ===== -->
+<script>
+  const firebaseConfig = {
+  apiKey: "AIzaSyBcqmUnJKay7Z4ee4e_zp3ERM7xSPtA-8o",
+  authDomain: "homework-app-26f2b.firebaseapp.com",
+  projectId: "homework-app-26f2b",
+  storageBucket: "homework-app-26f2b.firebasestorage.app",
+  messagingSenderId: "772526188571",
+  appId: "1:772526188571:web:04fba8faa35c38838730be"
+};
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+</script>
 </head>
 
 <body>
@@ -1109,19 +1125,34 @@ window.addEventListener('load', () => {
         document.getElementById('chrisSpeech').classList.add('visible');
     }, 1000); // Apparaît après 1 seconde
 });
-        // Charger les données locales
-        function chargerDonneesLocales() {
-            const localDevoirs = JSON.parse(localStorage.getItem('hw_devoirs'));
-            const localAnnonces = JSON.parse(localStorage.getItem('hw_annonces'));
-            if (localDevoirs && localDevoirs.length > 0) devoirs = localDevoirs;
-            if (localAnnonces && localAnnonces.length > 0) annonces = localAnnonces;
-        }
+        // Charger les données depuis Firebase
+function chargerDonneesLocales() {
+  // Charger les devoirs depuis Firebase
+  db.collection("devoirs").orderBy("date").onSnapshot((snapshot) => {
+    devoirs = [];
+    snapshot.forEach((doc) => {
+      devoirs.push({ id: doc.id, ...doc.data() });
+    });
+    afficherDevoirs();
+    afficherDevoirsAdmin();
+    mettreAJourStats();
+  });
 
-        // Sauvegarder les données
-        function sauvegarderDonnees() {
-            localStorage.setItem('hw_devoirs', JSON.stringify(devoirs));
-            localStorage.setItem('hw_annonces', JSON.stringify(annonces));
-        }
+  // Charger les annonces depuis Firebase
+  db.collection("annonces").orderBy("date", "desc").onSnapshot((snapshot) => {
+    annonces = [];
+    snapshot.forEach((doc) => {
+      annonces.push({ id: doc.id, ...doc.data() });
+    });
+    afficherAnnonces();
+    afficherAnnoncesAdmin();
+  });
+}
+
+        // Sauvegarder les données (plus nécessaire avec Firebase)
+function sauvegarderDonnees() {
+  // Firebase synchronise automatiquement, rien à faire ici
+}
 
         // Date du jour
         function afficherDateAujourdhui() {
@@ -1232,31 +1263,41 @@ window.addEventListener('load', () => {
             document.getElementById('annonceModal').style.display = 'none';
         }
 
-        function sauvegarderAnnonce(e) {
-            e.preventDefault();
-            const id = document.getElementById('annonceId').value;
-            const titre = document.getElementById('annonceTitre').value;
-            const contenu = document.getElementById('annonceContenu').value;
-            const nouvelleAnnonce = { id: id || Date.now(), titre, contenu, date: new Date().toISOString() };
-            if (id) {
-                annonces = annonces.map(a => a.id == id ? nouvelleAnnonce : a);
-            } else {
-                annonces.push(nouvelleAnnonce);
-            }
-            sauvegarderDonnees();
-            afficherAnnonces();
-            afficherAnnoncesAdmin();
-            closeAnnonceModal();
-            afficherNotification(id ? "Annonce modifiée!" : "Annonce ajoutée!");
-        }
+       function sauvegarderAnnonce(e) {
+  e.preventDefault();
+  const id = document.getElementById('annonceId').value;
+  const titre = document.getElementById('annonceTitre').value;
+  const contenu = document.getElementById('annonceContenu').value;
 
-        function supprimerAnnonce(id) {
-            annonces = annonces.filter(a => a.id !== id);
-            sauvegarderDonnees();
-            afficherAnnonces();
-            afficherAnnoncesAdmin();
-            afficherNotification("Annonce supprimée!");
-        }
+  const annonceData = {
+    titre: titre,
+    contenu: contenu,
+    date: firebase.firestore.FieldValue.serverTimestamp()
+  };
+
+  if (id) {
+    // Met à jour l'annonce existante
+    db.collection("annonces").doc(id).update(annonceData).then(() => {
+      closeAnnonceModal();
+      afficherNotification("Annonce modifiée et synchronisée!");
+    });
+  } else {
+    // Ajoute une nouvelle annonce
+    db.collection("annonces").add(annonceData).then(() => {
+      closeAnnonceModal();
+      afficherNotification("Annonce ajoutée et synchronisée!");
+    });
+  }
+}
+
+       function supprimerAnnonce(id) {
+  db.collection("annonces").doc(id).delete().then(() => {
+    afficherNotification("Annonce supprimée et synchronisée!");
+  }).catch((error) => {
+    console.error("Erreur : ", error);
+    afficherNotification("Erreur lors de la suppression.", true);
+  });
+}
 
         // Devoirs
         function afficherDevoirs(filtre = 'all', recherche = '') {
@@ -1385,36 +1426,45 @@ window.addEventListener('load', () => {
             });
         }
 
-        function ajouterDevoir(e) {
-            e.preventDefault();
-            const nom = document.getElementById('nomDevoir').value;
-            const categorie = document.getElementById('categorieDevoir').value;
-            const date = document.getElementById('dateRemise').value;
-            const description = document.getElementById('descriptionDevoir').value;
-            const nb = document.getElementById('nbDevoir').value;
-            const image = document.getElementById('imageDevoir').value;
+       function ajouterDevoir(e) {
+  e.preventDefault();
+  const nom = document.getElementById('nomDevoir').value;
+  const categorie = document.getElementById('categorieDevoir').value;
+  const date = document.getElementById('dateRemise').value;
+  const description = document.getElementById('descriptionDevoir').value;
+  const nb = document.getElementById('nbDevoir').value;
+  const image = document.getElementById('imageDevoir').value;
 
-            if (image && !image.startsWith('http')) {
-                afficherNotification("Lien d'image invalide.", true);
-                return;
-            }
+  if (image && !image.startsWith('http')) {
+    afficherNotification("Lien d'image invalide.", true);
+    return;
+  }
 
-            const nouveauDevoir = { id: Date.now(), nom, categorie, date, description, nb, image };
-            devoirs.push(nouveauDevoir);
-            sauvegarderDonnees();
-            document.getElementById('ajoutDevoirForm').reset();
-            afficherDevoirs();
-            afficherDevoirsAdmin();
-            afficherNotification("Travail ajouté!");
-        }
-
-        function supprimerDevoir(id) {
-            devoirs = devoirs.filter(d => d.id !== id);
-            sauvegarderDonnees();
-            afficherDevoirs();
-            afficherDevoirsAdmin();
-            afficherNotification("Travail supprimé!");
-        }
+  // Ajoute dans Firestore
+  db.collection("devoirs").add({
+    nom: nom,
+    categorie: categorie,
+    date: date,
+    description: description,
+    nb: nb,
+    image: image,
+    dateAjout: firebase.firestore.FieldValue.serverTimestamp()
+  }).then(() => {
+    document.getElementById('ajoutDevoirForm').reset();
+    afficherNotification("Travail ajouté et synchronisé!");
+  }).catch((error) => {
+    console.error("Erreur : ", error);
+    afficherNotification("Erreur lors de l'ajout.", true);
+  });
+}
+       function supprimerDevoir(id) {
+  db.collection("devoirs").doc(id).delete().then(() => {
+    afficherNotification("Travail supprimé et synchronisé!");
+  }).catch((error) => {
+    console.error("Erreur : ", error);
+    afficherNotification("Erreur lors de la suppression.", true);
+  });
+}
 
         function ouvrirModalEdition(id) {
             const devoir = devoirs.find(d => d.id === id);
@@ -1432,29 +1482,37 @@ window.addEventListener('load', () => {
             document.getElementById('editModal').style.display = 'none';
         }
 
-        function sauvegarderDevoirModifie(e) {
-            e.preventDefault();
-            const id = parseInt(document.getElementById('editDevoirId').value);
-            const nom = document.getElementById('editNomDevoir').value;
-            const categorie = document.getElementById('editCategorieDevoir').value;
-            const date = document.getElementById('editDateRemise').value;
-            const description = document.getElementById('editDescriptionDevoir').value;
-            const nb = document.getElementById('editNbDevoir').value;
-            const image = document.getElementById('editImageDevoir').value;
+       function sauvegarderDevoirModifie(e) {
+  e.preventDefault();
+  const id = document.getElementById('editDevoirId').value;
+  const nom = document.getElementById('editNomDevoir').value;
+  const categorie = document.getElementById('editCategorieDevoir').value;
+  const date = document.getElementById('editDateRemise').value;
+  const description = document.getElementById('editDescriptionDevoir').value;
+  const nb = document.getElementById('editNbDevoir').value;
+  const image = document.getElementById('editImageDevoir').value;
 
-            if (image && !image.startsWith('http')) {
-                afficherNotification("Lien d'image invalide.", true);
-                return;
-            }
+  if (image && !image.startsWith('http')) {
+    afficherNotification("Lien d'image invalide.", true);
+    return;
+  }
 
-            const index = devoirs.findIndex(d => d.id === id);
-            devoirs[index] = { ...devoirs[index], nom, categorie, date, description, nb, image };
-            sauvegarderDonnees();
-            afficherDevoirs();
-            afficherDevoirsAdmin();
-            closeModal();
-            afficherNotification("Travail modifié!");
-        }
+  // Met à jour dans Firestore
+  db.collection("devoirs").doc(id).update({
+    nom: nom,
+    categorie: categorie,
+    date: date,
+    description: description,
+    nb: nb,
+    image: image
+  }).then(() => {
+    closeModal();
+    afficherNotification("Travail modifié et synchronisé!");
+  }).catch((error) => {
+    console.error("Erreur : ", error);
+    afficherNotification("Erreur lors de la modification.", true);
+  });
+}
 
         // Admin
         function verifierMotDePasse() {
