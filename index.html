@@ -35,6 +35,7 @@
 
     <style>
         :root {
+            --white: #ffffff;
             --primary: #352208;
             --secondary: #8B6F47;
             --accent: #E1BB80;
@@ -731,11 +732,11 @@
             <input type="text" class="search-bar" id="searchBar" placeholder="🔍 Rechercher...">
 
             <div class="filters">
-                <button class="filter-btn active" onclick="filterDevoirs('all')">Tous</button>
-                <button class="filter-btn" onclick="filterDevoirs('termine')">Terminés</button>
-                <button class="filter-btn" onclick="filterDevoirs('non-termine')">Non terminés</button>
-                <button class="filter-btn" onclick="filterDevoirs('rappel')">À rendre demain</button>
-                <button class="filter-btn" onclick="filterDevoirs('passe')">Passés</button>
+                <button class="filter-btn active" onclick="filterDevoirs(event, 'all')">Tous</button>
+                <button class="filter-btn" onclick="filterDevoirs(event, 'termine')">Terminés</button>
+                <button class="filter-btn" onclick="filterDevoirs(event, 'non-termine')"">Non terminés</button>
+                <button class="filter-btn"onclick="filterDevoirs(event, 'rappel')"">À rendre demain</button>
+                <button class="filter-btn" onclick="filterDevoirs(event, 'passe')"">Passés</button>
             </div>
 
             <div id="listeDevoirs"></div>
@@ -1125,25 +1126,46 @@ window.addEventListener('load', () => {
         document.getElementById('chrisSpeech').classList.add('visible');
     }, 1000); // Apparaît après 1 seconde
 });
-        // Charger les données depuis Firebase
-function chargerDonneesLocales() {
-  // Charger les devoirs depuis Firebase
+      function chargerDonneesLocales() {
+
+  // Charger les devoirs
   db.collection("devoirs").orderBy("date").onSnapshot((snapshot) => {
-    devoirs = [];
+
+    let firebaseDevoirs = [];
+
     snapshot.forEach((doc) => {
-      devoirs.push({ id: doc.id, ...doc.data() });
+      firebaseDevoirs.push({
+        id: doc.id,
+        ...doc.data()
+      });
     });
+
+    // Si Firebase est vide → garder les données locales
+    devoirs = firebaseDevoirs.length > 0
+      ? firebaseDevoirs
+      : DONNEES_INITIALES.devoirs;
+
     afficherDevoirs();
     afficherDevoirsAdmin();
     mettreAJourStats();
   });
 
-  // Charger les annonces depuis Firebase
+  // Charger les annonces
   db.collection("annonces").orderBy("date", "desc").onSnapshot((snapshot) => {
-    annonces = [];
+
+    let firebaseAnnonces = [];
+
     snapshot.forEach((doc) => {
-      annonces.push({ id: doc.id, ...doc.data() });
+      firebaseAnnonces.push({
+        id: doc.id,
+        ...doc.data()
+      });
     });
+
+    annonces = firebaseAnnonces.length > 0
+      ? firebaseAnnonces
+      : DONNEES_INITIALES.annonces;
+
     afficherAnnonces();
     afficherAnnoncesAdmin();
   });
@@ -1214,7 +1236,13 @@ function sauvegarderDonnees() {
                 element.className = 'annonce';
                 element.innerHTML = `
                     <div class="annonce-titre">${annonce.titre}</div>
-                    <div class="annonce-date"><i class="fas fa-calendar-alt"></i> ${new Date(annonce.date).toLocaleDateString('fr-FR')}</div>
+                    <div class="annonce-date"><i class="fas fa-calendar-alt"></i> ${annonce.date
+  ? new Date(
+      annonce.date.seconds
+        ? annonce.date.seconds * 1000
+        : annonce.date
+    ).toLocaleDateString('fr-FR')
+  : "Date inconnue"}</div>
                     <div class="annonce-contenu">${annonce.contenu}</div>
                 `;
                 liste.appendChild(element);
@@ -1234,11 +1262,19 @@ function sauvegarderDonnees() {
                 element.className = 'annonce';
                 element.innerHTML = `
                     <div class="annonce-actions">
-                        <button onclick="ouvrirModalAnnonce(${annonce.id})"><i class="fas fa-edit"></i></button>
-                        <button class="danger" onclick="supprimerAnnonce(${annonce.id})"><i class="fas fa-trash"></i></button>
+                        <button onclick="ouvrirModalAnnonce('${annonce.id}')"><i class="fas fa-edit"></i></button>
+                        <button class="danger" onclick="supprimerAnnonce('${annonce.id}')"><i class="fas fa-trash"></i></button>
                     </div>
                     <div class="annonce-titre">${annonce.titre}</div>
-                    <div class="annonce-date"><i class="fas fa-calendar-alt"></i> ${new Date(annonce.date).toLocaleDateString('fr-FR')}</div>
+                    <div class="annonce-date"><i class="fas fa-calendar-alt"></i> ${
+  annonce.date
+    ? new Date(
+        annonce.date.seconds
+          ? annonce.date.seconds * 1000
+          : annonce.date
+      ).toLocaleDateString('fr-FR')
+    : "Date inconnue"
+}</div>
                     <div class="annonce-contenu">${annonce.contenu}</div>
                 `;
                 liste.appendChild(element);
@@ -1249,7 +1285,7 @@ function sauvegarderDonnees() {
             const modal = document.getElementById('annonceModal');
             const form = document.getElementById('annonceForm');
             if (id) {
-                const annonce = annonces.find(a => a.id == id);
+                const annonce = annonces.find(a => String(a.id) === String(id));
                 document.getElementById('annonceId').value = annonce.id;
                 document.getElementById('annonceTitre').value = annonce.titre;
                 document.getElementById('annonceContenu').value = annonce.contenu;
@@ -1358,7 +1394,7 @@ function sauvegarderDonnees() {
             });
         }
 
-        function filterDevoirs(type) {
+        function filterDevoirs(event, type) {
             const recherche = document.getElementById('searchBar').value;
             afficherDevoirs(type, recherche);
             document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
@@ -1418,8 +1454,8 @@ function sauvegarderDonnees() {
                         <div class="devoir-date"><i class="fas fa-calendar-alt"></i> Remise prévue pour le ${new Date(devoir.date).toLocaleDateString('fr-FR')}</div>
                     </div>
                     <div class="devoir-actions">
-                        <button onclick="ouvrirModalEdition(${devoir.id})"><i class="fas fa-edit"></i></button>
-                        <button class="danger" onclick="supprimerDevoir(${devoir.id})"><i class="fas fa-trash"></i></button>
+                        <button onclick="ouvrirModalEdition('${devoir.id}')"><i class="fas fa-edit"></i></button>
+                        <button class="danger" onclick="supprimerDevoir('${devoir.id}')"><i class="fas fa-trash"></i></button>
                     </div>
                 `;
                 liste.appendChild(element);
@@ -1467,7 +1503,7 @@ function sauvegarderDonnees() {
 }
 
         function ouvrirModalEdition(id) {
-            const devoir = devoirs.find(d => d.id === id);
+            const devoir = devoirs.find(d => String(d.id) === String(id));
             document.getElementById('editDevoirId').value = devoir.id;
             document.getElementById('editNomDevoir').value = devoir.nom;
             document.getElementById('editCategorieDevoir').value = devoir.categorie;
