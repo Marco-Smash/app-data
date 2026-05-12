@@ -1,0 +1,1541 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HomeWork</title>
+
+    <!-- Balises PWA -->
+    <meta name="theme-color" content="#352208">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="HomeWork">
+    <link rel="apple-touch-icon" href="https://i.ibb.co/tpZw0vGq/HW-1.png">
+    <link rel="icon" type="image/png" href="https://i.ibb.co/tpZw0vGq/HW-1.png">
+
+    <!-- Manifest JSON intégré -->
+    <link rel="manifest" href="data:application/json;charset=utf-8,
+    {
+      %22name%22: %22HomeWork%22,
+      %22short_name%22: %22HW%22,
+      %22start_url%22: %22.%22,
+      %22display%22: %22standalone%22,
+      %22background_color%22: %22#F5F5F5%22,
+      %22theme_color%22: %22#352208%22,
+      %22icons%22: [{
+        %22src%22: %22https://i.ibb.co/tpZw0vGq/HW-1.png%22,
+        %22sizes%22: %22192x192%22,
+        %22type%22: %22image/png%22
+      }]
+    }">
+
+    <!-- Polices et Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Madegra:wght@400&family=Old+Standard+TT:wght=700&family=Segoe+UI:wght@400;600&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary: #352208;
+            --secondary: #8B6F47;
+            --accent: #E1BB80;
+            --light: #F5F5F5;
+            --warning: #D4A574;
+            --danger: #e74c3c;
+            --bg: #F5F5F5;
+            --text: #352208;
+            --card-bg: #ffffff;
+            --shadow: rgba(53, 34, 8, 0.1);
+            --border-radius: 12px;
+        }
+
+        [data-theme="dark"] {
+            --primary: #E1BB80;
+            --secondary: #D4A574;
+            --accent: #8B6F47;
+            --light: #352208;
+            --warning: #F5F5F5;
+            --bg: #1a1206;
+            --text: #F5F5F5;
+            --card-bg: #2a1e10;
+            --shadow: rgba(0, 0, 0, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+            padding-bottom: 60px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            padding: 20px 0;
+            margin-bottom: 20px;
+        }
+
+        .logo-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .logo {
+            width: 80px;
+            height: 40px;
+        }
+
+        header h1 {
+            margin: 0;
+            color: var(--primary);
+            font-size: 1.8em;
+            font-family: 'Madegra', serif;
+            letter-spacing: 1px;
+        }
+
+        header p {
+            color: var(--text);
+            font-size: 1.1em;
+            opacity: 0.8;
+            margin-top: 5px;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--card-bg);
+            border: 1px solid var(--light);
+            color: var(--text);
+            padding: 8px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2em;
+            box-shadow: 0 2px 5px var(--shadow);
+            z-index: 1000;
+        }
+
+        .section {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 12px var(--shadow);
+            border: 1px solid var(--light);
+        }
+
+        .section-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--light);
+        }
+
+        .section-title h2 {
+            font-size: 1.5em;
+            color: var(--primary);
+            font-family: 'Old Standard TT', serif;
+        }
+
+        .annonce {
+            background: linear-gradient(135deg, rgba(225, 187, 128, 0.1), rgba(212, 165, 116, 0.1));
+            border-left: 4px solid var(--warning);
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 0 var(--border-radius) var(--border-radius) 0;
+            position: relative;
+        }
+
+        .annonce-titre {
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 5px;
+            font-family: 'Old Standard TT', serif;
+        }
+
+        .annonce-date {
+            font-size: 0.8em;
+            color: var(--text);
+            opacity: 0.7;
+            margin-bottom: 8px;
+        }
+
+        .annonce-contenu {
+            color: var(--text);
+            line-height: 1.5;
+            white-space: pre-line;
+        }
+
+        .annonce-actions {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            display: flex;
+            gap: 5px;
+        }
+
+        .annonce-actions button {
+            background: none;
+            border: none;
+            color: var(--primary);
+            cursor: pointer;
+            font-size: 1em;
+            opacity: 0.7;
+        }
+
+        .annonce-actions button:hover {
+            opacity: 1;
+            color: var(--danger);
+        }
+
+        .empty-annonces, .empty-state {
+            text-align: center;
+            padding: 20px;
+            color: var(--text);
+            opacity: 0.7;
+        }
+
+        .stats {
+            display: flex;
+            gap: 10px;
+            margin: 15px 0;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, rgba(139, 111, 71, 0.1), rgba(225, 187, 128, 0.1));
+            padding: 12px;
+            border-radius: var(--border-radius);
+            text-align: center;
+            flex: 1;
+            min-width: 100px;
+            border: 1px solid var(--light);
+        }
+
+        .stat-card h3 {
+            font-size: 1.5em;
+            color: var(--primary);
+            font-family: 'Old Standard TT', serif;
+        }
+
+        .stat-card p {
+            font-size: 0.85em;
+            color: var(--text);
+            opacity: 0.8;
+            margin-top: 5px;
+        }
+
+        .progress-container {
+            width: 100%;
+            background: var(--light);
+            border-radius: var(--border-radius);
+            height: 8px;
+            margin: 15px 0;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            width: 0%;
+            border-radius: var(--border-radius);
+            transition: width 0.5s ease;
+        }
+
+        .search-bar {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid var(--light);
+            border-radius: var(--border-radius);
+            margin-bottom: 15px;
+            background: var(--card-bg);
+            color: var(--text);
+        }
+
+        .filters {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .filter-btn {
+            padding: 6px 12px;
+            border: 1px solid var(--light);
+            background: var(--card-bg);
+            color: var(--primary);
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.85em;
+        }
+
+        .filter-btn.active {
+            background: var(--accent);
+            color: var(--white);
+            border-color: var(--accent);
+        }
+
+        .devoir {
+            display: flex;
+            align-items: flex-start;
+            padding: 12px;
+            margin: 8px 0;
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            border-left: 4px solid var(--primary);
+            box-shadow: 0 2px 4px var(--shadow);
+            width: 100%;
+        }
+
+        .devoir.termine {
+            opacity: 0.7;
+            border-left-color: var(--secondary);
+        }
+
+        .devoir.rappel {
+            border-left-color: var(--danger);
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(231, 76, 60, 0.4); }
+            70% { box-shadow: 0 0 0 8px rgba(231, 76, 60, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(231, 76, 60, 0); }
+        }
+
+        .devoir input[type="checkbox"] {
+            margin-right: 10px;
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            accent-color: var(--accent);
+            margin-top: 2px;
+        }
+
+        .devoir-info {
+            flex: 1;
+        }
+
+        .devoir-nom {
+            font-weight: 700;
+            color: var(--primary);
+            font-family: 'Old Standard TT', serif;
+            font-size: 1.05em;
+            margin-bottom: 4px;
+        }
+
+        .devoir-categorie {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 10px;
+            font-size: 0.7em;
+            margin-left: 6px;
+            background: var(--primary);
+            color: var(--white);
+        }
+
+        .devoir-date {
+            font-size: 0.85em;
+            color: var(--text);
+            opacity: 0.8;
+            margin-top: 4px;
+        }
+
+        .devoir-description {
+            margin-top: 8px;
+            font-size: 0.9em;
+            color: var(--text);
+            line-height: 1.4;
+            white-space: pre-line;
+        }
+
+        .devoir-nb {
+            display: block;
+            margin-top: 8px;
+            padding-top: 8px;
+            border-top: 1px dashed var(--light);
+            font-style: italic;
+            color: var(--text);
+            font-size: 0.85em;
+            white-space: pre-line;
+        }
+
+        .devoir-nb strong {
+            font-style: normal;
+            color: var(--warning);
+        }
+
+        .devoir-image img {
+            max-width: 100%;
+            border-radius: 6px;
+            margin-top: 8px;
+            box-shadow: 0 1px 3px var(--shadow);
+        }
+
+        .devoir-actions {
+            margin-left: 8px;
+            display: flex;
+            gap: 4px;
+        }
+
+        .devoir-actions button {
+            background: none;
+            border: none;
+            color: var(--primary);
+            cursor: pointer;
+            font-size: 1em;
+            opacity: 0.7;
+        }
+
+        .devoir-actions button:hover {
+            color: var(--danger);
+            opacity: 1;
+        }
+
+        .form-group {
+            margin-bottom: 12px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+            color: var(--primary);
+            font-size: 0.9em;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--light);
+            border-radius: var(--border-radius);
+            font-size: 0.9em;
+            background: var(--card-bg);
+            color: var(--text);
+        }
+
+        .form-group textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+
+        button {
+            background: var(--primary);
+            color: var(--white);
+            border: none;
+            padding: 10px 16px;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-size: 0.9em;
+            box-shadow: 0 2px 4px var(--shadow);
+        }
+
+        button:hover {
+            background: var(--secondary);
+        }
+
+        button.secondary {
+            background: var(--light);
+            color: var(--primary);
+            box-shadow: none;
+        }
+
+        button.danger {
+            background: var(--danger);
+        }
+
+        .admin-login, .user-login {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        .admin-login input, .user-login input {
+            padding: 8px;
+            border: 1px solid var(--light);
+            border-radius: var(--border-radius);
+            background: var(--card-bg);
+            color: var(--text);
+            width: 200px;
+            font-size: 0.9em;
+        }
+
+        .notification {
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            background: var(--primary);
+            color: var(--white);
+            padding: 10px 16px;
+            border-radius: var(--border-radius);
+            box-shadow: 0 4px 12px var(--shadow);
+            display: none;
+            z-index: 1000;
+            font-size: 0.9em;
+        }
+
+        .notification.error {
+            background: var(--danger);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: var(--border-radius);
+            width: 90%;
+            max-width: 450px;
+            box-shadow: 0 8px 20px var(--shadow);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--light);
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            color: var(--primary);
+            font-size: 1.4em;
+            cursor: pointer;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 10px;
+            background: var(--light);
+            border-radius: var(--border-radius);
+            margin-bottom: 15px;
+            border: 1px solid var(--primary);
+        }
+
+ /* ===== PETIT SINGE ANIMÉ AVEC LUNETTES ===== */
+.chris-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 5px;
+}
+
+.chris-speech {
+    background: var(--card-bg);
+    border: 1px solid var(--light);
+    border-radius: 10px;
+    padding: 10px 14px;
+    max-width: 280px;
+    box-shadow: 0 4px 12px var(--shadow);
+    font-size: 0.85em;
+    opacity: 0;
+    transition: opacity 0.5s;
+    margin-bottom: 5px;
+    text-align: left;
+    line-height: 1.4;
+}
+
+.chris-speech.visible {
+    opacity: 1;
+}
+
+.chris-speech::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    right: 15px;
+    width: 0;
+    height: 0;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-top: 8px solid var(--card-bg);
+}
+
+.chris-monkey {
+    width: 50px;
+    height: 60px;
+    cursor: pointer;
+    animation: float 2s ease-in-out infinite;
+}
+
+.chris-monkey::before {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 30px;
+    height: 6px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 50%;
+    filter: blur(2px);
+    z-index: -1;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+}
+
+@media (max-width: 768px) {
+    .chris-monkey {
+        width: 40px;
+        height: 50px;
+    }
+    .chris-speech {
+        max-width: 220px;
+        font-size: 0.8em;
+    }
+}
+    </style>
+    <audio id="notificationSound" src="https://assets.mixkit.co/sfx/preview/mixkit-positive-notification-951.mp3" preload="auto"></audio>
+</head>
+
+<body>
+    <button class="theme-toggle" onclick="toggleTheme()">
+        <i class="fas fa-moon" id="themeIcon"></i>
+    </button>
+
+    <div class="container">
+        <header>
+            <div class="logo-container">
+                <svg class="logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 40" width="80" height="40">
+                    <circle cx="25" cy="20" r="18" fill="#352208"/>
+                    <circle cx="75" cy="20" r="18" fill="#E1BB80"/>
+                </svg>
+                <h1>HomeWork</h1>
+            </div>
+            <p>Salut ! Voici les travaux que nous avons pour la semaine</p>
+        </header>
+
+        <!-- Section Utilisateur -->
+        <div class="section">
+            <div class="user-info" id="userInfo" style="display: none;">
+                <i class="fas fa-user"></i>
+                <span id="userEmail">Non connecté</span>
+                <button class="secondary" onclick="deconnecterUtilisateur()">
+                    <i class="fas fa-sign-out-alt"></i> Déconnexion
+                </button>
+            </div>
+            <div id="userLoginForm">
+                <div class="user-login">
+                    <input type="email" id="emailUtilisateur" placeholder="Votre e-mail">
+                    <button onclick="enregistrerUtilisateur()">
+                        <i class="fas fa-user-plus"></i> S'enregistrer
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section Annonces -->
+        <div class="section">
+            <div class="section-title">
+                <h2><i class="fas fa-bullhorn"></i> Annonces</h2>
+                <button class="secondary" onclick="ouvrirModalAnnonce()" id="btnAjouterAnnonce" style="display: none;">
+                    <i class="fas fa-plus"></i> Ajouter
+                </button>
+            </div>
+            <div id="listeAnnonces"></div>
+        </div>
+
+        <!-- Section Devoirs -->
+        <div class="section">
+            <div class="section-title">
+                <h2><i class="fas fa-list-check"></i> Travaux</h2>
+                <span id="dateAujourdhui"></span>
+            </div>
+
+            <div class="stats">
+                <div class="stat-card">
+                    <h3 id="totalDevoirs">0</h3>
+                    <p>Total</p>
+                </div>
+                <div class="stat-card">
+                    <h3 id="devoirsTermines">0</h3>
+                    <p>Terminés</p>
+                </div>
+                <div class="stat-card">
+                    <h3 id="devoirsRestants">0</h3>
+                    <p>Restants</p>
+                </div>
+                <div class="stat-card">
+                    <h3 id="pourcentageTermines">0%</h3>
+                    <p>Progression</p>
+                </div>
+            </div>
+
+            <div class="progress-container">
+                <div class="progress-bar" id="progressBar"></div>
+            </div>
+
+            <input type="text" class="search-bar" id="searchBar" placeholder="🔍 Rechercher...">
+
+            <div class="filters">
+                <button class="filter-btn active" onclick="filterDevoirs('all')">Tous</button>
+                <button class="filter-btn" onclick="filterDevoirs('termine')">Terminés</button>
+                <button class="filter-btn" onclick="filterDevoirs('non-termine')">Non terminés</button>
+                <button class="filter-btn" onclick="filterDevoirs('rappel')">À rendre demain</button>
+                <button class="filter-btn" onclick="filterDevoirs('passe')">Passés</button>
+            </div>
+
+            <div id="listeDevoirs"></div>
+        </div>
+
+        <!-- Section Admin -->
+        <div class="section" id="adminSection" style="display: none;">
+            <div class="section-title">
+                <h2><i class="fas fa-cog"></i> Gestion</h2>
+                <button class="secondary" onclick="deconnecterAdmin()">
+                    <i class="fas fa-sign-out-alt"></i> Déconnexion
+                </button>
+            </div>
+
+            <div id="adminAnnoncesSection">
+                <h3><i class="fas fa-bullhorn"></i> Annonces</h3>
+                <button class="secondary" onclick="ouvrirModalAnnonce()" style="margin-bottom: 10px;">
+                    <i class="fas fa-plus"></i> Ajouter
+                </button>
+                <div id="adminListeAnnonces"></div>
+            </div>
+
+            <hr style="margin: 15px 0; border: none; border-top: 1px solid var(--light);">
+
+            <form id="ajoutDevoirForm">
+                <h3><i class="fas fa-list-check"></i> Ajouter un travail</h3>
+                <div class="form-group">
+                    <label for="nomDevoir">Nom du cours</label>
+                    <input type="text" id="nomDevoir" placeholder="Ex: Maths - Exercices" required>
+                </div>
+                <div class="form-group">
+                    <label for="categorieDevoir">Catégorie</label>
+                    <select id="categorieDevoir" required>
+                        <option value="" disabled selected>Choisir...</option>
+                        <option value="Maths">Maths</option>
+                        <option value="Français">Français</option>
+                        <option value="Sciences">Sciences</option>
+                        <option value="Histoire">Histoire</option>
+                        <option value="Langues">Langues</option>
+                        <option value="Autre">Autre</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="dateRemise">Date de remise</label>
+                    <input type="date" id="dateRemise" required>
+                </div>
+                <div class="form-group">
+                    <label for="descriptionDevoir">Description</label>
+                    <textarea id="descriptionDevoir" rows="3" placeholder="Détails..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="imageDevoir">Lien image (Admin)</label>
+                    <input type="text" id="imageDevoir" placeholder="Ex: https://i.ibb.co/...">
+                </div>
+                <div class="form-group">
+                    <label for="nbDevoir">N.B.</label>
+                    <textarea id="nbDevoir" rows="2" placeholder="Remarques..."></textarea>
+                </div>
+                <button type="submit"><i class="fas fa-plus"></i> Ajouter</button>
+            </form>
+
+            <div id="adminListeDevoirs" style="margin-top: 15px;">
+                <h3><i class="fas fa-edit"></i> Liste des travaux</h3>
+                <div id="adminDevoirsList"></div>
+            </div>
+        </div>
+
+        <!-- Formulaire de connexion admin -->
+        <div class="section" id="loginForm">
+            <div class="section-title">
+                <h2><i class="fas fa-lock"></i> Espace Admin</h2>
+            </div>
+            <div class="admin-login">
+                <input type="password" id="motDePasse" placeholder="Mot de passe">
+                <button onclick="verifierMotDePasse()">
+                    <i class="fas fa-key"></i> Se connecter
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Annonce -->
+    <div class="modal" id="annonceModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-bullhorn"></i> Annonce</h2>
+                <button class="close-modal" onclick="closeAnnonceModal()">&times;</button>
+            </div>
+            <form id="annonceForm">
+                <input type="hidden" id="annonceId">
+                <div class="form-group">
+                    <label for="annonceTitre">Titre</label>
+                    <input type="text" id="annonceTitre" placeholder="Ex: Interro vendredi" required>
+                </div>
+                <div class="form-group">
+                    <label for="annonceContenu">Contenu</label>
+                    <textarea id="annonceContenu" rows="3" placeholder="Détails..." required></textarea>
+                </div>
+                <button type="submit"><i class="fas fa-save"></i> Enregistrer</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Édition Devoir -->
+    <div class="modal" id="editModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-edit"></i> Modifier</h2>
+                <button class="close-modal" onclick="closeModal()">&times;</button>
+            </div>
+            <form id="editDevoirForm">
+                <input type="hidden" id="editDevoirId">
+                <div class="form-group">
+                    <label for="editNomDevoir">Nom</label>
+                    <input type="text" id="editNomDevoir" required>
+                </div>
+                <div class="form-group">
+                    <label for="editCategorieDevoir">Catégorie</label>
+                    <select id="editCategorieDevoir" required>
+                        <option value="Maths">Maths</option>
+                        <option value="Français">Français</option>
+                        <option value="Sciences">Sciences</option>
+                        <option value="Histoire">Histoire</option>
+                        <option value="Langues">Langues</option>
+                        <option value="Autre">Autre</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="editDateRemise">Date</label>
+                    <input type="date" id="editDateRemise" required>
+                </div>
+                <div class="form-group">
+                    <label for="editDescriptionDevoir">Description</label>
+                    <textarea id="editDescriptionDevoir" rows="3"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="editImageDevoir">Image</label>
+                    <input type="text" id="editImageDevoir" placeholder="Lien...">
+                </div>
+                <div class="form-group">
+                    <label for="editNbDevoir">N.B.</label>
+                    <textarea id="editNbDevoir" rows="2"></textarea>
+                </div>
+                <button type="submit"><i class="fas fa-save"></i> Sauvegarder</button>
+            </form>
+        </div>
+    </div>
+<!-- Petit singe animé avec lunettes -->
+<div class="chris-container">
+    <div class="chris-speech" id="chrisSpeech">
+        Salut, Moi c'est Chris ! Et je suis là pour te guider. <br><br>
+        <strong>Comment utiliser HomeWork ?</strong><br>
+        • <strong>Enregistre-toi</strong> avec ton email pour sauvegarder ta progression.<br>
+        • <strong>Coche les devoirs</strong> terminés pour suivre ton avancée.<br>
+        • Utilise les <strong>filtres</strong> (Tous, Terminés, À rendre demain, etc.).<br>
+        <br>
+        <strong>Allez, tu vas y arriver ! 💪</strong>
+    </div>
+    <div class="chris-monkey" onclick="toggleChris()">
+        <svg viewBox="0 0 100 120" xmlns="http://www.w3.org/2000/svg">
+            <!-- Corps -->
+            <ellipse cx="50" cy="80" rx="20" ry="25" fill="#8B4513" />
+
+            <!-- Tête -->
+            <circle cx="50" cy="40" r="18" fill="#D2B48C" stroke="#8B4513" stroke-width="1" />
+
+            <!-- Oreilles -->
+            <ellipse cx="38" cy="30" rx="6" ry="9" fill="#D2B48C" stroke="#8B4513" stroke-width="1" />
+            <ellipse cx="62" cy="30" rx="6" ry="9" fill="#D2B48C" stroke="#8B4513" stroke-width="1" />
+
+            <!-- Visage -->
+            <circle cx="50" cy="38" r="12" fill="#E8C9A0" />
+
+            <!-- Lunettes -->
+            <circle cx="44" cy="36" r="7" fill="none" stroke="#000" stroke-width="1.5" />
+            <circle cx="56" cy="36" r="7" fill="none" stroke="#000" stroke-width="1.5" />
+            <line x1="50" y1="36" x2="50" y2="36" stroke="#000" stroke-width="1.5" />
+
+            <!-- Yeux -->
+            <circle cx="44" cy="36" r="2.5" fill="#000" />
+            <circle cx="56" cy="36" r="2.5" fill="#000" />
+            <circle cx="44" cy="35" r="0.8" fill="#FFF" />
+            <circle cx="56" cy="35" r="0.8" fill="#FFF" />
+
+            <!-- Nez -->
+            <circle cx="50" cy="38" r="2" fill="#000" />
+
+            <!-- Bouche (sourire) -->
+            <path d="M46 42 Q50 44 54 42" stroke="#000" stroke-width="1" fill="none" />
+
+            <!-- Bras gauche -->
+            <path d="M35 50 Q25 45 20 40" stroke="#8B4513" stroke-width="3" fill="none" stroke-linecap="round" />
+
+            <!-- Bras droit -->
+            <path d="M65 50 Q75 45 80 40" stroke="#8B4513" stroke-width="3" fill="none" stroke-linecap="round" />
+
+            <!-- Jambes -->
+            <path d="M42 100 Q40 110 45 115" stroke="#8B4513" stroke-width="3" fill="none" stroke-linecap="round" />
+            <path d="M58 100 Q60 110 55 115" stroke="#8B4513" stroke-width="3" fill="none" stroke-linecap="round" />
+
+            <!-- Queue -->
+            <path d="M25 60 Q15 55 10 50" stroke="#8B4513" stroke-width="2" fill="none" stroke-linecap="round" />
+        </svg>
+    </div>
+</div>
+    <!-- Service Worker et JavaScript -->
+    <script>
+        // Service Worker intégré
+        const serviceWorkerCode = `
+          const CACHE_NAME = 'hw-cache-v1';
+          const urlsToCache = [
+            '/',
+            '/index.html',
+            'https://i.ibb.co/tpZw0vGq/HW-1.png',
+'https://i.ibb.co/wFHHVG24/t-l-chargement.jpg',
+            'https://i.ibb.co/tT6n6Mfd/Les-animaux-africains.jpg',
+            'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css',
+            'https://fonts.googleapis.com/css2?family=Madegra:wght@400&family=Old+Standard+TT:wght=700&family=Segoe+UI:wght@400;600&display=swap'
+          ];
+          self.addEventListener('install', (event) => {
+            event.waitUntil(caches.open(CACHE_NAME).then((cache) => cache.addAll(urlsToCache)));
+          });
+          self.addEventListener('fetch', (event) => {
+            event.respondWith(caches.match(event.request).then((response) => response || fetch(event.request)));
+          });
+        `;
+        if ('serviceWorker' in navigator) {
+          window.addEventListener('load', () => {
+            const blob = new Blob([serviceWorkerCode], { type: 'application/javascript' });
+            navigator.serviceWorker.register(URL.createObjectURL(blob));
+          });
+        }
+
+        // ===== DONNÉES INTÉGRÉES =====
+        const DONNEES_INITIALES = {
+          "devoirs": [
+            {
+              "id": 1778502737936,
+              "nom": "Histoire",
+              "categorie": "Histoire",
+              "date": "2026-05-12",
+              "description": "Exposé en groupe",
+              "nb": "Si vous savez pas avec qui vous êtes, veuillez demander aux chefs des groupes",
+              "image": ""
+            },
+            {
+              "id": 1778503132184,
+              "nom": "Civics",
+              "categorie": "Autre",
+              "date": "2026-05-12",
+              "description": "Exposé sur les institutions de la RDC.",
+              "nb": "M. Jonathan a dit qu’on doit lui envoyer nos présentations, pour qu’il prépare bien ses questions. ( jonathan.ngoyi@ascitech.ac.cd )",
+              "image": ""
+            },
+            {
+              "id": 1778503297009,
+              "nom": "Technologie",
+              "categorie": "Maths",
+              "date": "2026-05-12",
+              "description": "Chaque groupe doit faire un logigramme de leur projet.",
+              "nb": "Sans oublier que les résultats de nos projets sont bientôt à présenter.",
+              "image": ""
+            },
+            {
+              "id": 1778503570737,
+              "nom": "Statistics",
+              "categorie": "Maths",
+              "date": "2026-05-12",
+              "description": "- Research on probability (Work in group and Individual) : \n* Definition \n* Types \n* Formula \n* Probability and statistics \n* Permutation and combination \n* Importance of probability \n                     \n-Research about types of probability and give 2 examples for each ( Work In group)",
+              "nb": "La première question est à répondre dans le cahier. Et après préparer un exposé en groupe sur ça.",
+              "image": ""
+            },
+            {
+              "id": 1778504073132,
+              "nom": "ICDL",
+              "categorie": "Autre",
+              "date": "2026-05-20",
+              "description": "Reproduire le bulletin sur Excel (à rendre sur Classroom)",
+              "nb": "",
+              "image": "https://i.ibb.co/wNRgFJHM/Capture-d-cran-2026-05-11-135154.png"
+            },
+            {
+              "id": 1778504145916,
+              "nom": "Français",
+              "categorie": "Français",
+              "date": "2026-05-13",
+              "description": "",
+              "nb": "Tous les exposés sont sensés être prêts ce Mercredi",
+              "image": "https://i.ibb.co/cXsNMBmj/IMG-5388.jpg"
+            },
+            {
+              "id": 1778504913602,
+              "nom": "Physique",
+              "categorie": "Sciences",
+              "date": "2026-05-15",
+              "description": "",
+              "nb": "Le travail sur les couleurs est à faire dans le cahier de Physique B",
+              "image": "https://i.ibb.co/ZRtRqGKs/IMG-5391.jpg"
+            },
+            {
+              "id": 1778505004824,
+              "nom": "Dessin scientifique",
+              "categorie": "Maths",
+              "date": "2026-05-15",
+              "description": "",
+              "nb": "A faire sur papier duplicateur",
+              "image": "https://i.ibb.co/GvHjHHZf/IMG-5387.jpg"
+            },
+            {
+              "id": 1778505234346,
+              "nom": "ECC",
+              "categorie": "Autre",
+              "date": "2026-05-15",
+              "description": "Faire un duplex, une chronique et l’article du lendemain se basant sur l’histoire de l’explosion en Normandie ( Le travail en binôme de la dernière fois).",
+              "nb": "Concernant l’article du lendemain : \nStructure : \n- Surtitre ( Où et quand ) \n- Titre ( Quoi et qui ) \n- Image illustrative ( Image d’explosion, etc) \n- Chapeau ( Qui, quoi, quand et où )\n- Développement ( Comment et pourquoi ) \n- Chute",
+              "image": ""
+            }
+          ],
+          "annonces": [
+            {
+              "id": 1778500447040,
+              "titre": "Correction des cahiers",
+              "contenu": "M. Guerth a dit qu’à la fin de la 4eme période il corrigera TOUT nos cahiers.\nLa 4eme période se terminera approximativement dans 2 semaines.",
+              "date": "2026-05-11T12:56:18.457Z"
+            },
+            {
+              "id": 1778500533773,
+              "titre": "Début du travail",
+              "contenu": "Mme Gloria a dit que ce mardi on commencera le travail sur la banque",
+              "date": "2026-05-11T11:55:33.773Z"
+            }
+          ]
+        };
+
+        // Configuration
+        const MOT_DE_PASSE = "HW2026";
+        const NOM_APP = "HomeWork";
+
+        // Données
+        let devoirs = [...DONNEES_INITIALES.devoirs];
+        let annonces = [...DONNEES_INITIALES.annonces];
+        let theme = localStorage.getItem('hw_theme') || 'light';
+        let utilisateurCourant = JSON.parse(localStorage.getItem('hw_utilisateur')) || null;
+        let devoirsTermines = {};
+
+        // Initialisation
+        document.addEventListener('DOMContentLoaded', () => {
+            document.documentElement.setAttribute('data-theme', theme);
+            updateThemeIcon();
+            afficherDateAujourdhui();
+            afficherUtilisateur();
+            chargerDonneesLocales();
+            afficherDevoirs();
+            afficherDevoirsAdmin();
+            afficherAnnonces();
+            afficherAnnoncesAdmin();
+            mettreAJourStats();
+            demanderPermissionNotification();
+            setInterval(verifierRappels, 60 * 60 * 1000);
+
+            // Écouteurs
+            document.getElementById('searchBar').addEventListener('input', filtrerDevoirs);
+            document.getElementById('ajoutDevoirForm').addEventListener('submit', ajouterDevoir);
+            document.getElementById('editDevoirForm').addEventListener('submit', sauvegarderDevoirModifie);
+            document.getElementById('annonceForm').addEventListener('submit', sauvegarderAnnonce);
+
+            // Afficher Chris après 1 seconde
+            setTimeout(() => {
+                document.getElementById('chrisSpeech').classList.add('visible');
+            }, 1000);
+        });
+
+  // Fonction pour afficher/masquer le message de Chris
+function toggleChris() {
+    const speech = document.getElementById('chrisSpeech');
+    speech.classList.toggle('visible');
+    if (speech.classList.contains('visible')) {
+        setTimeout(() => {
+            speech.classList.remove('visible');
+        }, 5000); // Disparaît après 5 secondes
+    }
+}
+
+// Afficher Chris au chargement
+window.addEventListener('load', () => {
+    setTimeout(() => {
+        document.getElementById('chrisSpeech').classList.add('visible');
+    }, 1000); // Apparaît après 1 seconde
+});
+        // Charger les données locales
+        function chargerDonneesLocales() {
+            const localDevoirs = JSON.parse(localStorage.getItem('hw_devoirs'));
+            const localAnnonces = JSON.parse(localStorage.getItem('hw_annonces'));
+            if (localDevoirs && localDevoirs.length > 0) devoirs = localDevoirs;
+            if (localAnnonces && localAnnonces.length > 0) annonces = localAnnonces;
+        }
+
+        // Sauvegarder les données
+        function sauvegarderDonnees() {
+            localStorage.setItem('hw_devoirs', JSON.stringify(devoirs));
+            localStorage.setItem('hw_annonces', JSON.stringify(annonces));
+        }
+
+        // Date du jour
+        function afficherDateAujourdhui() {
+            const aujourdHui = new Date();
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            document.getElementById('dateAujourdhui').textContent = aujourdHui.toLocaleDateString('fr-FR', options);
+        }
+
+        // Utilisateur
+        function enregistrerUtilisateur() {
+            const email = document.getElementById('emailUtilisateur').value;
+            if (!email || !email.includes('@')) {
+                afficherNotification("E-mail invalide.", true);
+                return;
+            }
+            utilisateurCourant = { email: email };
+            localStorage.setItem('hw_utilisateur', JSON.stringify(utilisateurCourant));
+            devoirsTermines = JSON.parse(localStorage.getItem(`hw_devoirs_termines_${email}`)) || {};
+            afficherUtilisateur();
+            afficherDevoirs();
+            afficherNotification(`Bonjour, ${email}!`);
+        }
+
+        function deconnecterUtilisateur() {
+            utilisateurCourant = null;
+            localStorage.removeItem('hw_utilisateur');
+            devoirsTermines = {};
+            afficherUtilisateur();
+            afficherDevoirs();
+            afficherNotification("Déconnecté.");
+        }
+
+        function afficherUtilisateur() {
+            const userInfo = document.getElementById('userInfo');
+            const userLoginForm = document.getElementById('userLoginForm');
+            if (utilisateurCourant) {
+                document.getElementById('userEmail').textContent = utilisateurCourant.email;
+                userInfo.style.display = 'flex';
+                userLoginForm.style.display = 'none';
+                devoirsTermines = JSON.parse(localStorage.getItem(`hw_devoirs_termines_${utilisateurCourant.email}`)) || {};
+            } else {
+                userInfo.style.display = 'none';
+                userLoginForm.style.display = 'block';
+                devoirsTermines = {};
+            }
+        }
+
+        // Annonces
+        function afficherAnnonces() {
+            const liste = document.getElementById('listeAnnonces');
+            const annoncesTries = [...annonces].sort((a, b) => new Date(b.date) - new Date(a.date));
+            if (annoncesTries.length === 0) {
+                liste.innerHTML = `<div class="empty-annonces"><i class="fas fa-megaphone"></i><p>Aucune annonce.</p></div>`;
+                return;
+            }
+            liste.innerHTML = '';
+            annoncesTries.forEach(annonce => {
+                const element = document.createElement('div');
+                element.className = 'annonce';
+                element.innerHTML = `
+                    <div class="annonce-titre">${annonce.titre}</div>
+                    <div class="annonce-date"><i class="fas fa-calendar-alt"></i> ${new Date(annonce.date).toLocaleDateString('fr-FR')}</div>
+                    <div class="annonce-contenu">${annonce.contenu}</div>
+                `;
+                liste.appendChild(element);
+            });
+        }
+
+        function afficherAnnoncesAdmin() {
+            const liste = document.getElementById('adminListeAnnonces');
+            const annoncesTries = [...annonces].sort((a, b) => new Date(b.date) - new Date(a.date));
+            if (annoncesTries.length === 0) {
+                liste.innerHTML = `<div class="empty-state"><i class="fas fa-megaphone"></i><p>Aucune annonce.</p></div>`;
+                return;
+            }
+            liste.innerHTML = '';
+            annoncesTries.forEach(annonce => {
+                const element = document.createElement('div');
+                element.className = 'annonce';
+                element.innerHTML = `
+                    <div class="annonce-actions">
+                        <button onclick="ouvrirModalAnnonce(${annonce.id})"><i class="fas fa-edit"></i></button>
+                        <button class="danger" onclick="supprimerAnnonce(${annonce.id})"><i class="fas fa-trash"></i></button>
+                    </div>
+                    <div class="annonce-titre">${annonce.titre}</div>
+                    <div class="annonce-date"><i class="fas fa-calendar-alt"></i> ${new Date(annonce.date).toLocaleDateString('fr-FR')}</div>
+                    <div class="annonce-contenu">${annonce.contenu}</div>
+                `;
+                liste.appendChild(element);
+            });
+        }
+
+        function ouvrirModalAnnonce(id = null) {
+            const modal = document.getElementById('annonceModal');
+            const form = document.getElementById('annonceForm');
+            if (id) {
+                const annonce = annonces.find(a => a.id == id);
+                document.getElementById('annonceId').value = annonce.id;
+                document.getElementById('annonceTitre').value = annonce.titre;
+                document.getElementById('annonceContenu').value = annonce.contenu;
+            } else {
+                form.reset();
+            }
+            modal.style.display = 'flex';
+        }
+
+        function closeAnnonceModal() {
+            document.getElementById('annonceModal').style.display = 'none';
+        }
+
+        function sauvegarderAnnonce(e) {
+            e.preventDefault();
+            const id = document.getElementById('annonceId').value;
+            const titre = document.getElementById('annonceTitre').value;
+            const contenu = document.getElementById('annonceContenu').value;
+            const nouvelleAnnonce = { id: id || Date.now(), titre, contenu, date: new Date().toISOString() };
+            if (id) {
+                annonces = annonces.map(a => a.id == id ? nouvelleAnnonce : a);
+            } else {
+                annonces.push(nouvelleAnnonce);
+            }
+            sauvegarderDonnees();
+            afficherAnnonces();
+            afficherAnnoncesAdmin();
+            closeAnnonceModal();
+            afficherNotification(id ? "Annonce modifiée!" : "Annonce ajoutée!");
+        }
+
+        function supprimerAnnonce(id) {
+            annonces = annonces.filter(a => a.id !== id);
+            sauvegarderDonnees();
+            afficherAnnonces();
+            afficherAnnoncesAdmin();
+            afficherNotification("Annonce supprimée!");
+        }
+
+        // Devoirs
+        function afficherDevoirs(filtre = 'all', recherche = '') {
+            const liste = document.getElementById('listeDevoirs');
+            const aujourdHui = new Date(); aujourdHui.setHours(0, 0, 0, 0);
+
+            let devoirsFiltres = devoirs.filter(devoir => {
+                const dateRemise = new Date(devoir.date);
+                const correspondRecherche = devoir.nom.toLowerCase().includes(recherche.toLowerCase()) ||
+                    devoir.description.toLowerCase().includes(recherche.toLowerCase()) ||
+                    devoir.categorie.toLowerCase().includes(recherche.toLowerCase()) ||
+                    (devoir.nb && devoir.nb.toLowerCase().includes(recherche.toLowerCase()));
+
+                switch (filtre) {
+                    case 'termine': return correspondRecherche && (utilisateurCourant ? devoirsTermines[devoir.id] : false);
+                    case 'non-termine': return correspondRecherche && !(utilisateurCourant ? devoirsTermines[devoir.id] : false) && dateRemise >= aujourdHui;
+                    case 'rappel':
+                        const demain = new Date(aujourdHui);
+                        demain.setDate(demain.getDate() + 1);
+                        return correspondRecherche && dateRemise.getTime() === demain.getTime();
+                    case 'passe': return correspondRecherche && dateRemise < aujourdHui;
+                    default: return correspondRecherche;
+                }
+            }).sort((a, b) => new Date(a.date) - new Date(b.date));
+
+            if (devoirsFiltres.length === 0) {
+                liste.innerHTML = `<div class="empty-state"><i class="fas fa-clipboard-list"></i><p>Aucun travail.</p></div>`;
+                return;
+            }
+
+            liste.innerHTML = '';
+            devoirsFiltres.forEach(devoir => {
+                const dateRemise = new Date(devoir.date);
+                const estTermine = utilisateurCourant ? devoirsTermines[devoir.id] || false : false;
+                const estPasse = dateRemise < aujourdHui;
+                const demain = new Date(aujourdHui);
+                demain.setDate(demain.getDate() + 1);
+                const estRappel = dateRemise.getTime() === demain.getTime();
+
+                const element = document.createElement('div');
+                element.className = `devoir ${estTermine ? 'termine' : ''} ${estPasse ? 'passe' : ''} ${estRappel ? 'rappel' : ''}`;
+
+                const imageHTML = devoir.image ? `<div class="devoir-image"><img src="${devoir.image}" alt="Image" onerror="this.style.display='none'"></div>` : '';
+                const nbHTML = devoir.nb ? `<div class="devoir-nb"><strong>N.B. :</strong> ${devoir.nb}</div>` : '';
+
+                element.innerHTML = `
+                    <input type="checkbox" ${estTermine ? 'checked' : ''} onchange="toggleDevoirTermine(${devoir.id}, this.checked)" ${estPasse ? 'disabled' : ''}>
+                    <div class="devoir-info">
+                        <div class="devoir-nom"><strong>${devoir.nom}</strong></div>
+                        <div class="devoir-categorie">${devoir.categorie}</div>
+                        ${devoir.description ? `<div class="devoir-description">${devoir.description}</div>` : ''}
+                        ${imageHTML}
+                        ${nbHTML}
+                        <div class="devoir-date"><i class="fas fa-calendar-alt"></i> Remise prévue pour le ${dateRemise.toLocaleDateString('fr-FR')}</div>
+                    </div>
+                `;
+                liste.appendChild(element);
+            });
+        }
+
+        function filterDevoirs(type) {
+            const recherche = document.getElementById('searchBar').value;
+            afficherDevoirs(type, recherche);
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+        }
+
+        function filtrerDevoirs() {
+            const recherche = document.getElementById('searchBar').value;
+            const filtreActif = document.querySelector('.filter-btn.active').getAttribute('onclick').match(/filterDevoirs\('([^']+)'\)/)[1];
+            afficherDevoirs(filtreActif, recherche);
+        }
+
+        function toggleDevoirTermine(id, termine) {
+            if (!utilisateurCourant) {
+                afficherNotification("Connectez-vous pour cocher les travaux.", true);
+                return;
+            }
+            devoirsTermines[id] = termine;
+            localStorage.setItem(`hw_devoirs_termines_${utilisateurCourant.email}`, JSON.stringify(devoirsTermines));
+            afficherDevoirs();
+            mettreAJourStats();
+            afficherNotification(termine ? "Travail marqué comme terminé!" : "Travail marqué comme non terminé.");
+        }
+
+        function mettreAJourStats() {
+            const total = devoirs.length;
+            const termines = utilisateurCourant ? Object.values(devoirsTermines).filter(t => t).length : 0;
+            const restants = total - termines;
+            const pourcentage = total > 0 ? Math.round((termines / total) * 100) : 0;
+            document.getElementById('totalDevoirs').textContent = total;
+            document.getElementById('devoirsTermines').textContent = termines;
+            document.getElementById('devoirsRestants').textContent = restants;
+            document.getElementById('pourcentageTermines').textContent = `${pourcentage}%`;
+            document.getElementById('progressBar').style.width = `${pourcentage}%`;
+        }
+
+        function afficherDevoirsAdmin() {
+            const liste = document.getElementById('adminDevoirsList');
+            const devoirsTries = [...devoirs].sort((a, b) => new Date(b.date) - new Date(a.date));
+            if (devoirsTries.length === 0) {
+                liste.innerHTML = `<div class="empty-state"><i class="fas fa-clipboard-list"></i><p>Aucun travail.</p></div>`;
+                return;
+            }
+            liste.innerHTML = '';
+            devoirsTries.forEach(devoir => {
+                const element = document.createElement('div');
+                element.className = 'devoir';
+                const imageHTML = devoir.image ? `<div class="devoir-image"><img src="${devoir.image}" style="max-width: 60px;"></div>` : '';
+                const nbHTML = devoir.nb ? `<div class="devoir-nb"><strong>N.B. :</strong> ${devoir.nb}</div>` : '';
+                element.innerHTML = `
+                    <div class="devoir-info">
+                        <div class="devoir-nom"><strong>${devoir.nom}</strong></div>
+                        <div class="devoir-categorie">${devoir.categorie}</div>
+                        ${devoir.description ? `<div class="devoir-description">${devoir.description}</div>` : ''}
+                        ${imageHTML}
+                        ${nbHTML}
+                        <div class="devoir-date"><i class="fas fa-calendar-alt"></i> Remise prévue pour le ${new Date(devoir.date).toLocaleDateString('fr-FR')}</div>
+                    </div>
+                    <div class="devoir-actions">
+                        <button onclick="ouvrirModalEdition(${devoir.id})"><i class="fas fa-edit"></i></button>
+                        <button class="danger" onclick="supprimerDevoir(${devoir.id})"><i class="fas fa-trash"></i></button>
+                    </div>
+                `;
+                liste.appendChild(element);
+            });
+        }
+
+        function ajouterDevoir(e) {
+            e.preventDefault();
+            const nom = document.getElementById('nomDevoir').value;
+            const categorie = document.getElementById('categorieDevoir').value;
+            const date = document.getElementById('dateRemise').value;
+            const description = document.getElementById('descriptionDevoir').value;
+            const nb = document.getElementById('nbDevoir').value;
+            const image = document.getElementById('imageDevoir').value;
+
+            if (image && !image.startsWith('http')) {
+                afficherNotification("Lien d'image invalide.", true);
+                return;
+            }
+
+            const nouveauDevoir = { id: Date.now(), nom, categorie, date, description, nb, image };
+            devoirs.push(nouveauDevoir);
+            sauvegarderDonnees();
+            document.getElementById('ajoutDevoirForm').reset();
+            afficherDevoirs();
+            afficherDevoirsAdmin();
+            afficherNotification("Travail ajouté!");
+        }
+
+        function supprimerDevoir(id) {
+            devoirs = devoirs.filter(d => d.id !== id);
+            sauvegarderDonnees();
+            afficherDevoirs();
+            afficherDevoirsAdmin();
+            afficherNotification("Travail supprimé!");
+        }
+
+        function ouvrirModalEdition(id) {
+            const devoir = devoirs.find(d => d.id === id);
+            document.getElementById('editDevoirId').value = devoir.id;
+            document.getElementById('editNomDevoir').value = devoir.nom;
+            document.getElementById('editCategorieDevoir').value = devoir.categorie;
+            document.getElementById('editDateRemise').value = devoir.date;
+            document.getElementById('editDescriptionDevoir').value = devoir.description || '';
+            document.getElementById('editNbDevoir').value = devoir.nb || '';
+            document.getElementById('editImageDevoir').value = devoir.image || '';
+            document.getElementById('editModal').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('editModal').style.display = 'none';
+        }
+
+        function sauvegarderDevoirModifie(e) {
+            e.preventDefault();
+            const id = parseInt(document.getElementById('editDevoirId').value);
+            const nom = document.getElementById('editNomDevoir').value;
+            const categorie = document.getElementById('editCategorieDevoir').value;
+            const date = document.getElementById('editDateRemise').value;
+            const description = document.getElementById('editDescriptionDevoir').value;
+            const nb = document.getElementById('editNbDevoir').value;
+            const image = document.getElementById('editImageDevoir').value;
+
+            if (image && !image.startsWith('http')) {
+                afficherNotification("Lien d'image invalide.", true);
+                return;
+            }
+
+            const index = devoirs.findIndex(d => d.id === id);
+            devoirs[index] = { ...devoirs[index], nom, categorie, date, description, nb, image };
+            sauvegarderDonnees();
+            afficherDevoirs();
+            afficherDevoirsAdmin();
+            closeModal();
+            afficherNotification("Travail modifié!");
+        }
+
+        // Admin
+        function verifierMotDePasse() {
+            const motDePasse = document.getElementById('motDePasse').value;
+            if (motDePasse === MOT_DE_PASSE) {
+                document.getElementById('adminSection').style.display = 'block';
+                document.getElementById('loginForm').style.display = 'none';
+                document.getElementById('btnAjouterAnnonce').style.display = 'block';
+                afficherNotification("Connecté en admin!");
+            } else {
+                afficherNotification("Mot de passe incorrect.", true);
+            }
+        }
+
+        function deconnecterAdmin() {
+            document.getElementById('adminSection').style.display = 'none';
+            document.getElementById('loginForm').style.display = 'block';
+            document.getElementById('btnAjouterAnnonce').style.display = 'none';
+            document.getElementById('motDePasse').value = '';
+            afficherNotification("Déconnecté.");
+        }
+
+        // Rappels
+        function verifierRappels() {
+            const aujourdHui = new Date(); aujourdHui.setHours(0, 0, 0, 0);
+            devoirs.forEach(devoir => {
+                const dateRemise = new Date(devoir.date);
+                const dateRappel = new Date(dateRemise);
+                dateRappel.setDate(dateRappel.getDate() - 1);
+                if (dateRappel.getTime() === aujourdHui.getTime()) {
+                    const estTermine = utilisateurCourant ?
+                        devoirsTermines[devoir.id] || false :
+                        localStorage.getItem(`hw_devoirs_termines_${devoir.id}`) || false;
+                    if (!estTermine) envoyerNotificationRappel(devoir);
+                }
+            });
+        }
+
+        function demanderPermissionNotification() {
+            if (!("Notification" in window)) return;
+            if (Notification.permission !== "granted" && Notification.permission !== "denied") {
+                Notification.requestPermission().then(permission => {
+                    if (permission === "granted") {
+                        verifierRappels();
+                        afficherNotification("Notifications activées!");
+                    }
+                });
+            }
+        }
+
+        function envoyerNotificationRappel(devoir) {
+            if ("Notification" in window && Notification.permission === "granted") {
+                const dateRemise = new Date(devoir.date);
+                new Notification(`⏰ ${NOM_APP} - Rappel`, {
+                    body: `Le travail "${devoir.nom}" (${devoir.categorie}) doit être rendu demain (${dateRemise.toLocaleDateString('fr-FR')}). ${devoir.nb ? '\nN.B. : ' + devoir.nb : ''}`,
+                    icon: "https://i.ibb.co/tpZw0vGq/HW-1.png"
+                });
+                document.getElementById('notificationSound').currentTime = 0;
+                document.getElementById('notificationSound').play().catch(e => console.log(e));
+            }
+        }
+
+        function afficherNotification(message, estErreur = false) {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.className = estErreur ? 'notification error' : 'notification';
+            notification.style.display = 'block';
+            setTimeout(() => notification.style.display = 'none', 3000);
+        }
+
+        function toggleTheme() {
+            theme = theme === 'light' ? 'dark' : 'light';
+            document.documentElement.setAttribute('data-theme', theme);
+            localStorage.setItem('hw_theme', theme);
+            updateThemeIcon();
+            afficherNotification(`Thème ${theme === 'dark' ? 'sombre' : 'clair'} activé!`);
+        }
+
+        function updateThemeIcon() {
+            document.getElementById('themeIcon').className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+        }
+    </script>
+</body>
+</html>
