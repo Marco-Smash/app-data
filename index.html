@@ -734,9 +734,9 @@
             <div class="filters">
                 <button class="filter-btn active" onclick="filterDevoirs(event, 'all')">Tous</button>
                 <button class="filter-btn" onclick="filterDevoirs(event, 'termine')">Terminés</button>
-                <button class="filter-btn" onclick="filterDevoirs(event, 'non-termine')"">Non terminés</button>
-                <button class="filter-btn"onclick="filterDevoirs(event, 'rappel')"">À rendre demain</button>
-                <button class="filter-btn" onclick="filterDevoirs(event, 'passe')"">Passés</button>
+                <button class="filter-btn" onclick="filterDevoirs(event, 'non-termine')">Non terminés</button>
+<button class="filter-btn" onclick="filterDevoirs(event, 'rappel')">À rendre demain</button>
+<button class="filter-btn" onclick="filterDevoirs(event, 'passe')">Passés</button>
             </div>
 
             <div id="listeDevoirs"></div>
@@ -1141,9 +1141,22 @@ window.addEventListener('load', () => {
     });
 
     // Si Firebase est vide → garder les données locales
-    devoirs = firebaseDevoirs.length > 0
-      ? firebaseDevoirs
-      : DONNEES_INITIALES.devoirs;
+    devoirs = [...DONNEES_INITIALES.devoirs];
+
+// Ajouter les devoirs Firebase sans supprimer les anciens
+firebaseDevoirs.forEach(fd => {
+
+  const existe = devoirs.some(d => 
+    d.nom === fd.nom &&
+    d.date === fd.date
+  );
+
+  if (!existe) {
+    devoirs.push(fd);
+  }
+
+});
+devoirs.sort((a, b) => new Date(a.date) - new Date(b.date));
 
     afficherDevoirs();
     afficherDevoirsAdmin();
@@ -1380,7 +1393,7 @@ function sauvegarderDonnees() {
                 const nbHTML = devoir.nb ? `<div class="devoir-nb"><strong>N.B. :</strong> ${devoir.nb}</div>` : '';
 
                 element.innerHTML = `
-                    <input type="checkbox" ${estTermine ? 'checked' : ''} onchange="toggleDevoirTermine(${devoir.id}, this.checked)" ${estPasse ? 'disabled' : ''}>
+                    <input type="checkbox" ${estTermine ? 'checked' : ''} onchange="toggleDevoirTermine('${devoir.id}', this.checked)" ${estPasse ? 'disabled' : ''}>
                     <div class="devoir-info">
                         <div class="devoir-nom"><strong>${devoir.nom}</strong></div>
                         <div class="devoir-categorie">${devoir.categorie}</div>
