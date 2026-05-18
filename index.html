@@ -1194,7 +1194,7 @@ button.secondary {
     <script>
         // Service Worker intégré
         const serviceWorkerCode = `
-          const CACHE_NAME = 'hw-cache-v2';
+          const CACHE_NAME = 'hw-cache-v1';
           const urlsToCache = [
             '/',
             '/index.html',
@@ -1220,89 +1220,111 @@ if ('serviceWorker' in navigator) {
         // ===== DONNÉES INTÉGRÉES =====
         const DONNEES_INITIALES = {
           "devoirs": [
-            {
-              "id": 1778502737936,
-              "nom": "Histoire",
-              "categorie": "Histoire",
-              "date": "2026-05-12",
-              "description": "Exposé en groupe",
-              "nb": "Si vous savez pas avec qui vous êtes, veuillez demander aux chefs des groupes",
-              "image": ""
-            },
-            {
-              "id": 1778503132184,
-              "nom": "Civics",
-              "categorie": "Autre",
-              "date": "2026-05-12",
-              "description": "Exposé sur les institutions de la RDC.",
-              "nb": "M. Jonathan a dit qu’on doit lui envoyer nos présentations, pour qu’il prépare bien ses questions. ( jonathan.ngoyi@ascitech.ac.cd )",
-              "image": ""
-            },
-            {
-              "id": 1778503297009,
-              "nom": "Technologie",
-              "categorie": "Maths",
-              "date": "2026-05-12",
-              "description": "Chaque groupe doit faire un logigramme de leur projet.",
-              "nb": "Sans oublier que les résultats de nos projets sont bientôt à présenter.",
-              "image": ""
-            },
-            {
-              "id": 1778503570737,
-              "nom": "Statistics",
-              "categorie": "Maths",
-              "date": "2026-05-12",
-              "description": "- Research on probability (Work in group and Individual) : \n* Definition \n* Types \n* Formula \n* Probability and statistics \n* Permutation and combination \n* Importance of probability \n                     \n-Research about types of probability and give 2 examples for each ( Work In group)",
-              "nb": "La première question est à répondre dans le cahier. Et après préparer un exposé en groupe sur ça.",
-              "image": ""
-            },
-            {
-              "id": 1778504073132,
-              "nom": "ICDL",
-              "categorie": "Autre",
-              "date": "2026-05-20",
-              "description": "Reproduire le bulletin sur Excel (à rendre sur Classroom)",
-              "nb": "",
-              "image": "https://i.ibb.co/wNRgFJHM/Capture-d-cran-2026-05-11-135154.png"
-            },
-            {
-              "id": 1778504145916,
-              "nom": "Français",
-              "categorie": "Français",
-              "date": "2026-05-13",
-              "description": "",
-              "nb": "Tous les exposés sont sensés être prêts ce Mercredi",
-              "image": "https://i.ibb.co/cXsNMBmj/IMG-5388.jpg"
-            },
-            {
-              "id": 1778504913602,
-              "nom": "Physique",
-              "categorie": "Sciences",
-              "date": "2026-05-15",
-              "description": "",
-              "nb": "Le travail sur les couleurs est à faire dans le cahier de Physique B",
-              "image": "https://i.ibb.co/ZRtRqGKs/IMG-5391.jpg"
-            },
-            {
-              "id": 1778505004824,
-              "nom": "Dessin scientifique",
-              "categorie": "Maths",
-              "date": "2026-05-15",
-              "description": "",
-              "nb": "A faire sur papier duplicateur",
-              "image": "https://i.ibb.co/GvHjHHZf/IMG-5387.jpg"
-            },
-            {
-              "id": 1778505234346,
-              "nom": "ECC",
-              "categorie": "Autre",
-              "date": "2026-05-15",
-              "description": "Faire un duplex, une chronique et l’article du lendemain se basant sur l’histoire de l’explosion en Normandie ( Le travail en binôme de la dernière fois).",
-              "nb": "Concernant l’article du lendemain : \nStructure : \n- Surtitre ( Où et quand ) \n- Titre ( Quoi et qui ) \n- Image illustrative ( Image d’explosion, etc) \n- Chapeau ( Qui, quoi, quand et où )\n- Développement ( Comment et pourquoi ) \n- Chute",
-              "image": ""
-            }
-          ],
-          "annonces": [
+  {
+    id: "1778503132184",
+    nom: "Civics",
+    categorie: "Autres",
+    date: "2026-05-20",
+    description: "",
+    nb: "",
+    image: ""
+  },
+
+  {
+    id: "1778503297009",
+    nom: "Technologie",
+    categorie: "Maths",
+    date: "2026-05-19",
+    description: "M. H3 a dit que nous devons choisir un projet qui représentera notre classe le jour de la Journée Culturelle (J.C).",
+    nb: "",
+    image: ""
+  },
+
+  {
+    id: "1778503570737",
+    nom: "Statistics",
+    categorie: "Maths",
+    date: "2026-05-19",
+    description: "- Research on probability (Work in group and Individual) : \n* Definition \n* Types \n* Formula \n* Probability and statistics \n* Permutation and combination \n* Importance of probability\n\n- Research about types of probability and give 2 examples for each (Work In group)",
+    nb: "La première question est à répondre dans le cahier. Et après préparer un exposé en groupe sur ça.",
+    image: ""
+  },
+
+  {
+    id: "1778504073132",
+    nom: "ICDL",
+    categorie: "Autres",
+    date: "2026-05-20",
+    description: "Reproduire le bulletin sur Excel (à rendre sur Classroom).",
+    nb: "",
+    image: "https://i.ibb.co/wNRgFJHM/Capture-d-cran-2026-05-11-135154.png"
+  },
+
+  {
+    id: "1778504145916",
+    nom: "Français",
+    categorie: "Littérature",
+    date: "2026-05-20",
+    description: "",
+    nb: "Tous les exposés sont sensés être prêts ce Mercredi.",
+    image: "https://i.ibb.co/cXsNMBmj/IMG-5388.jpg"
+  },
+
+  {
+    id: "1778505004824",
+    nom: "Dessin scientifique",
+    categorie: "Maths",
+    date: "2026-05-22",
+    description: "",
+    nb: "A faire sur papier duplicateur ou papier millimétré.",
+    image: "https://i.ibb.co/GQcpbV4b/IMG-5459.jpg"
+  },
+
+  {
+    id: "1778505234346",
+    nom: "ECC",
+    categorie: "Autres",
+    date: "2026-05-22",
+    description: "Faire un duplex, une chronique et l’article du lendemain se basant sur l’histoire de l’explosion en Normandie (Le travail en binôme de la dernière fois).",
+    nb: "Concernant l’article du lendemain : \n- Surtitre (Où et quand)\n- Titre (Quoi et qui)\n- Image illustrative\n- Chapeau (Qui, quoi, quand et où)\n- Développement (Comment et pourquoi)\n- Chute",
+    image: ""
+  },
+
+  {
+    id: "1779000000000",
+    nom: "Examen d'ICDL",
+    categorie: "Autres",
+    date: "2026-05-27",
+    dateAjout: "2026-05-18T14:11:03Z",
+    description: "Il a dit qu’il fallait qu’on observe notre environnement et qu’on résout un problème de l’environnement grâce à Excel.",
+    nb: "",
+    image: ""
+  },
+
+  {
+    id: "1779000000001",
+    nom: "Histoire",
+    categorie: "Littérature",
+    date: "2026-05-19",
+    dateAjout: "2026-05-18T14:19:58Z",
+    description: "Pour les garçons : Les progrès techniques et scientifiques européens du XVème au XXème siècle. Pour les filles : Premier voyage des européens en Afrique (causes et conséquences de leurs arrivées).",
+    nb: "Ce travail est individuel et à imprimer puis à rendre au prof.",
+    image: ""
+  },
+
+  {
+    id: "1779000000002",
+    nom: "Examen de Physique",
+    categorie: "Sciences",
+    date: "2026-05-29",
+    dateAjout: "2026-05-17T20:15:28Z",
+    description: "Cet examen sera sous forme de projet en groupe (M. H3 formera les groupes). Mais il faudra lire le cahier à partir de la Calorimétrie.",
+    nb: "",
+    image: ""
+  }
+],
+       
+ "annonces": [
             {
               "id": 1778500447040,
               "titre": "Correction des cahiers",
@@ -1383,83 +1405,69 @@ window.addEventListener('load', () => {
     }, 1000); // Apparaît après 1 seconde
 });
 
-      function chargerDonneesLocales() {
-  let devoirsSauvegardes = JSON.parse(localStorage.getItem('hw_devoirs')) || [];
-  const annoncesSauvegardees = JSON.parse(localStorage.getItem('hw_annonces')) || [];
-
-  if (!Array.isArray(devoirsSauvegardes) || devoirsSauvegardes.length === 0) {
-    devoirsSauvegardes = DONNEES_INITIALES.devoirs;
-    localStorage.setItem('hw_devoirs', JSON.stringify(devoirsSauvegardes));
-  }
-
-  devoirs = devoirsSauvegardes.map(devoir => ({
-    ...devoir,
-    categorie: normaliserCategorie(devoir.categorie)
-  }));
-
-  annonces = annoncesSauvegardees.length > 0
-    ? annoncesSauvegardees
-    : DONNEES_INITIALES.annonces;
-
-  afficherDevoirs();
-  afficherDevoirsAdmin();
-  afficherAnnonces();
-  afficherAnnoncesAdmin();
-  mettreAJourStats();
-
+     function chargerDonneesLocales() {
+  // Charger depuis Firebase d'abord
   db.collection("devoirs").orderBy("date").onSnapshot((snapshot) => {
-  let firebaseDevoirs = [];
-
-  snapshot.forEach((doc) => {
-    const data = doc.data();
-
-    if (!data.nom || !data.date) {
-      return;
-    }
-
-    firebaseDevoirs.push({
-      id: doc.id,
-      nom: data.nom || "",
-      categorie: normaliserCategorie(data.categorie || "Autres"),
-      date: data.date,
-      description: data.description || "",
-      nb: data.nb || "",
-      image: data.image || ""
+    let firebaseDevoirs = [];
+    snapshot.forEach((doc) => {
+      const data = doc.data();
+      if (!data.nom || !data.date) return;
+      firebaseDevoirs.push({
+        id: doc.id,
+        nom: data.nom,
+        categorie: normaliserCategorie(data.categorie || "Autres"),
+        date: data.date,
+        description: data.description || "",
+        nb: data.nb || "",
+        image: data.image || ""
+      });
     });
-  });
 
-  if (firebaseDevoirs.length > devoirs.length) {
+    // Mettre à jour les devoirs locaux avec Firebase (toujours prioritaire)
     devoirs = firebaseDevoirs;
     localStorage.setItem('hw_devoirs', JSON.stringify(devoirs));
 
     afficherDevoirs(filtreActif, document.getElementById('searchBar').value);
     afficherDevoirsAdmin();
     mettreAJourStats();
-  }
-}, (error) => {
-  console.warn("Firebase devoirs indisponible, données locales conservées :", error);
-});
-    
+  }, (error) => {
+    console.warn("Firebase indisponible, utilisation des données locales :", error);
+    // Fallback sur localStorage si Firebase échoue
+    let devoirsSauvegardes;
+    try {
+      devoirsSauvegardes = JSON.parse(localStorage.getItem('hw_devoirs')) || DONNEES_INITIALES.devoirs;
+    } catch (e) {
+      devoirsSauvegardes = DONNEES_INITIALES.devoirs;
+    }
+    devoirs = devoirsSauvegardes.map(devoir => ({
+      ...devoir,
+      categorie: normaliserCategorie(devoir.categorie)
+    }));
+    afficherDevoirs(filtreActif, document.getElementById('searchBar').value);
+    afficherDevoirsAdmin();
+    mettreAJourStats();
+  });
 
+  // Charger les annonces depuis Firebase
   db.collection("annonces").orderBy("date", "desc").onSnapshot((snapshot) => {
     let firebaseAnnonces = [];
-
     snapshot.forEach((doc) => {
-      firebaseAnnonces.push({
-        id: doc.id,
-        ...doc.data()
-      });
+      firebaseAnnonces.push({ id: doc.id, ...doc.data() });
     });
-
-    if (firebaseAnnonces.length > 0) {
-      annonces = firebaseAnnonces;
-      localStorage.setItem('hw_annonces', JSON.stringify(annonces));
-
-      afficherAnnonces();
-      afficherAnnoncesAdmin();
-    }
+    annonces = firebaseAnnonces;
+    localStorage.setItem('hw_annonces', JSON.stringify(annonces));
+    afficherAnnonces();
+    afficherAnnoncesAdmin();
   }, (error) => {
-    console.warn("Firebase annonces indisponible, annonces locales conservées :", error);
+    console.warn("Firebase annonces indisponible :", error);
+    // Fallback sur localStorage
+    try {
+      annonces = JSON.parse(localStorage.getItem('hw_annonces')) || DONNEES_INITIALES.annonces;
+    } catch (e) {
+      annonces = DONNEES_INITIALES.annonces;
+    }
+    afficherAnnonces();
+    afficherAnnoncesAdmin();
   });
 }
 
@@ -1836,10 +1844,10 @@ function togglePriorite(id) {
     });
     }
 
-       function ajouterDevoir(e) {
+      function ajouterDevoir(e) {
   e.preventDefault();
   const nom = document.getElementById('nomDevoir').value;
-  const categorie = document.getElementById('categorieDevoir').value;
+  const categorie = normaliserCategorie(document.getElementById('categorieDevoir').value);
   const date = document.getElementById('dateRemise').value;
   const description = document.getElementById('descriptionDevoir').value;
   const nb = document.getElementById('nbDevoir').value;
@@ -1848,7 +1856,9 @@ function togglePriorite(id) {
   if (image && !image.startsWith('http')) {
     afficherNotification("Lien d'image invalide.", true);
     return;
-  }  // Ajoute dans Firestore
+  }
+
+  // Ajouter directement dans Firebase
   db.collection("devoirs").add({
     nom: nom,
     categorie: categorie,
@@ -1859,42 +1869,22 @@ function togglePriorite(id) {
     dateAjout: firebase.firestore.FieldValue.serverTimestamp()
   }).then(() => {
     document.getElementById('ajoutDevoirForm').reset();
-    afficherNotification("Travail ajouté et synchronisé!");
+    afficherNotification("Travail ajouté et synchronisé avec Firebase !");
   }).catch((error) => {
-    console.error("Erreur : ", error);
-    afficherNotification("Erreur lors de l'ajout.", true);
+    console.error("Erreur Firebase :", error);
+    afficherNotification("Erreur lors de l'ajout. Vérifiez votre connexion.", true);
   });
 }
-       function supprimerDevoir(id) {
-  devoirs = devoirs.filter(devoir => String(devoir.id) !== String(id));
-  localStorage.setItem('hw_devoirs', JSON.stringify(devoirs));
+      function supprimerDevoir(id) {
+  const idString = String(id);
 
-  afficherDevoirs(filtreActif, document.getElementById('searchBar').value);
-  afficherDevoirsAdmin();
-  mettreAJourStats();
-
-  db.collection("devoirs").doc(String(id)).delete().catch((error) => {
-    console.warn("Suppression Firebase ignorée, suppression locale réussie :", error);
+  // Supprimer dans Firebase
+  db.collection("devoirs").doc(idString).delete().then(() => {
+    afficherNotification("Travail supprimé et synchronisé avec Firebase !");
+  }).catch((error) => {
+    console.error("Erreur Firebase :", error);
+    afficherNotification("Erreur lors de la suppression. Vérifiez votre connexion.", true);
   });
-
-  afficherNotification("Travail supprimé !");
-}
-        function ouvrirModalEdition(id) {
-  const devoir = devoirs.find(d => String(d.id) === String(id));
-
-  if (!devoir) {
-    afficherNotification("Travail introuvable.", true);
-    return;
-  }
-
-  document.getElementById('editDevoirId').value = devoir.id;
-  document.getElementById('editNomDevoir').value = devoir.nom;
-  document.getElementById('editCategorieDevoir').value = normaliserCategorie(devoir.categorie);
-  document.getElementById('editDateRemise').value = devoir.date;
-  document.getElementById('editDescriptionDevoir').value = devoir.description || '';
-  document.getElementById('editNbDevoir').value = devoir.nb || '';
-  document.getElementById('editImageDevoir').value = devoir.image || '';
-  document.getElementById('editModal').style.display = 'flex';
 }
 
         function closeModal() {
@@ -1903,11 +1893,8 @@ function togglePriorite(id) {
 
        function sauvegarderDevoirModifie(e) {
   e.preventDefault();
-
   const id = document.getElementById('editDevoirId').value;
-
   const devoirModifie = {
-    id: id,
     nom: document.getElementById('editNomDevoir').value,
     categorie: normaliserCategorie(document.getElementById('editCategorieDevoir').value),
     date: document.getElementById('editDateRemise').value,
@@ -1921,33 +1908,15 @@ function togglePriorite(id) {
     return;
   }
 
-  devoirs = devoirs.map(devoir =>
-    String(devoir.id) === String(id)
-      ? { ...devoir, ...devoirModifie }
-      : devoir
-  );
-
-  localStorage.setItem('hw_devoirs', JSON.stringify(devoirs));
-
-  afficherDevoirs(filtreActif, document.getElementById('searchBar').value);
-  afficherDevoirsAdmin();
-  mettreAJourStats();
-  closeModal();
-
-  db.collection("devoirs").doc(String(id)).update({
-    nom: devoirModifie.nom,
-    categorie: devoirModifie.categorie,
-    date: devoirModifie.date,
-    description: devoirModifie.description,
-    nb: devoirModifie.nb,
-    image: devoirModifie.image
+  // Mettre à jour dans Firebase
+  db.collection("devoirs").doc(id).update(devoirModifie).then(() => {
+    closeModal();
+    afficherNotification("Travail modifié et synchronisé avec Firebase !");
   }).catch((error) => {
-    console.warn("Modification Firebase ignorée, modification locale réussie :", error);
+    console.error("Erreur Firebase :", error);
+    afficherNotification("Erreur lors de la modification. Vérifiez votre connexion.", true);
   });
-
-  afficherNotification("Travail modifié !");
 }
-
         // Admin
         function verifierMotDePasse() {
             const motDePasse = document.getElementById('motDePasse').value;
